@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Savings Calculator — Valence Energy</title>
+<meta name="description" content="Estimate your potential energy savings with Valence Energy's free indicative calculator. Model LED, heat pumps, solar PV, insulation, and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0C2340; --teal:#0A7C6A; --green:#00C896; --amber:#E8A838;
+  --red:#C0392B; --ink:#1A2332; --muted:#5B6E84; --line:#DCE4ED;
+  --surface:#F4F7FB; --card:#FFFFFF;
+  --display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:var(--surface);-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* NAV */
+nav{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:50}
+.nav-inner{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:58px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.logo-mark{width:30px;height:30px;border-radius:7px;background:linear-gradient(135deg,var(--green),var(--teal));display:flex;align-items:center;justify-content:center;flex:none}
+.logo-mark svg{width:15px;height:15px}
+.logo-text{font-family:var(--display);font-weight:700;font-size:15px;color:#fff}
+.logo-text span{color:var(--green)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.nav-back{font-family:var(--display);font-weight:500;font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s}
+.nav-back:hover{color:#fff}
+.nav-audit{font-family:var(--display);font-weight:600;font-size:13px;background:var(--green);color:var(--navy);border:none;padding:8px 16px;border-radius:8px;cursor:pointer;text-decoration:none;transition:background .15s}
+.nav-audit:hover{background:#00dea8}
+
+/* HERO BAND */
+.calc-hero{background:linear-gradient(135deg,var(--navy),#0A3D6B);padding:42px 24px 36px;text-align:center}
+.eyebrow{font-family:var(--display);font-weight:600;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.calc-hero h1{font-family:var(--display);font-weight:700;font-size:clamp(24px,4vw,36px);color:#fff;letter-spacing:-.02em;margin-bottom:10px}
+.calc-hero p{color:rgba(255,255,255,.65);font-size:15px;max-width:580px;margin:0 auto}
+
+/* LAYOUT */
+.wrap{max-width:1160px;margin:0 auto;padding:32px 20px 80px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+@media(max-width:880px){.grid{grid-template-columns:1fr}}
+
+/* PANELS */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px;margin-bottom:20px}
+.panel:last-child{margin-bottom:0}
+.panel-title{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.panel-title .dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
+.step-badge{background:var(--navy);color:var(--green);font-family:var(--display);font-weight:700;font-size:11px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+
+/* FIELDS */
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+label{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:5px}
+input[type=text],input[type=number],input[type=email],input[type=tel],select,textarea{
+  width:100%;font-family:var(--body);font-size:14px;color:var(--ink);
+  border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;
+  transition:border-color .15s,box-shadow .15s;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(10,124,106,.1)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:480px){.row3{grid-template-columns:1fr 1fr}}
+.unit{position:relative}
+.unit .u{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);pointer-events:none}
+.unit input{padding-right:44px}
+
+/* BILL HELPER */
+.bill-helper{margin-top:8px;font-size:12.5px;padding:9px 12px;border-radius:8px;display:none}
+.bill-helper.warn{background:#FBF3E7;border:1px solid #EAD4B0;color:#7A5A22}
+.bill-helper.ok{background:#EFF7F1;border:1px solid #A8D5B5;color:#1F5C32}
+.bill-helper.info{background:#EEF4FB;border:1px solid #B0C8E8;color:#1A3D6A}
+
+/* MEASURE CARDS */
+.measure{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden;transition:border-color .15s}
+.measure.on{border-color:var(--teal)}
+.mhead{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;user-select:none;background:#F8FBFD;transition:background .15s}
+.measure.on .mhead{background:#EBF6F4}
+.mname{font-family:var(--display);font-weight:600;font-size:14px;color:var(--navy);flex:1}
+.mfuel{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:#fff;border:1px solid var(--line);padding:3px 8px;border-radius:20px}
+/* toggle */
+.switch{position:relative;width:40px;height:22px;flex:none}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.slider{position:absolute;inset:0;background:#C8D4DF;border-radius:20px;transition:.18s}
+.slider:before{content:"";position:absolute;height:16px;width:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.18s}
+.switch input:checked+.slider{background:var(--teal)}
+.switch input:checked+.slider:before{transform:translateX(18px)}
+.switch input:focus-visible+.slider{outline:3px solid var(--amber);outline-offset:2px}
+.mbody{padding:16px;border-top:1px solid var(--line);display:none}
+.measure.on .mbody{display:block}
+.mbody .note{background:#FBF8EE;border:1px solid #EAD9A8;border-radius:8px;padding:9px 12px;font-size:12px;color:#6A5020;margin-top:10px;line-height:1.5}
+
+/* RESULTS */
+.result-hero{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+@media(max-width:540px){.result-hero{grid-template-columns:1fr}}
+.rstat{border-radius:14px;padding:18px;color:#fff}
+.rstat.green{background:linear-gradient(140deg,var(--teal),#065a4b)}
+.rstat.navy{background:linear-gradient(140deg,var(--navy),#0a3060)}
+.rstat.amber{background:linear-gradient(140deg,#c07a10,#a86000)}
+.rstat .rl{font-size:11px;letter-spacing:.07em;text-transform:uppercase;opacity:.8;font-weight:600}
+.rstat .rv{font-family:var(--display);font-weight:700;font-size:26px;margin-top:5px;font-variant-numeric:tabular-nums}
+.rstat .rs{font-size:12px;opacity:.75;margin-top:3px}
+/* table */
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:right;padding:10px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+th{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+td.mname-td{font-weight:600;color:var(--navy);font-size:13px}
+tr.tot td{border-top:2px solid var(--navy);border-bottom:none;font-weight:700;padding-top:12px}
+.bar{height:6px;border-radius:3px;background:#E4ECF2;overflow:hidden;margin-top:4px;min-width:60px}
+.bar span{display:block;height:100%;border-radius:3px}
+.pbcell{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.empty{color:var(--muted);font-style:italic;padding:24px 6px;text-align:center;font-size:13px}
+
+/* CO2 badge */
+.co2-badge{margin-top:16px;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,rgba(10,124,106,.08),rgba(0,200,150,.05));border:1px solid rgba(10,124,106,.2);border-radius:10px;padding:12px 16px}
+.co2-badge .cv{font-family:var(--display);font-weight:700;font-size:20px;color:var(--teal)}
+.co2-badge .cl{font-size:13px;color:var(--muted)}
+
+/* GRANTS */
+.grants-section{margin-top:20px}
+.grants-caveat{font-size:12px;color:var(--muted);margin-bottom:14px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.grant-card{border:1px solid #B8DABD;border-radius:12px;padding:14px 16px;background:#F4FBF5;margin-bottom:10px}
+.grant-card:last-child{margin-bottom:0}
+.grant-card .gtitle{font-family:var(--display);font-weight:600;font-size:13.5px;color:#1A4D2C;margin-bottom:4px}
+.grant-card .gval{display:inline-block;background:#D4EDDA;color:#1A5C30;font-weight:700;font-size:11.5px;padding:2px 9px;border-radius:12px;margin-bottom:6px}
+.grant-card .gdesc{font-size:12.5px;color:var(--ink);margin-bottom:4px;line-height:1.45}
+.grant-card .gnote{font-size:11.5px;color:var(--muted);line-height:1.4;margin-bottom:6px}
+.grant-card a{color:var(--teal);font-size:12px;font-weight:500;text-decoration:none}
+.grant-card a:hover{text-decoration:underline}
+
+/* CTA BAND */
+.cta-band{
+  background:linear-gradient(135deg,var(--navy),#0A3D6B);
+  border-radius:18px;padding:32px 28px;text-align:center;margin-top:24px;
+}
+.cta-band h3{font-family:var(--display);font-weight:700;font-size:22px;color:#fff;margin-bottom:10px}
+.cta-band p{color:rgba(255,255,255,.68);font-size:14px;line-height:1.6;margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:480px){.cta-form-row{grid-template-columns:1fr}}
+.cta-input{
+  font-family:var(--body);font-size:14px;color:var(--ink);
+  border:none;border-radius:8px;padding:10px 14px;background:rgba(255,255,255,.92);width:100%;
+}
+.cta-input:focus{outline:2px solid var(--green)}
+.cta-submit{
+  width:100%;font-family:var(--display);font-weight:600;font-size:15px;
+  background:var(--green);color:var(--navy);border:none;
+  padding:13px;border-radius:10px;cursor:pointer;transition:background .15s;
+}
+.cta-submit:hover{background:#00dea8}
+.cta-note{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px}
+
+/* PRINT */
+@media print{
+  nav,.calc-hero,.cta-band{display:none}
+  .panel{break-inside:avoid}
+  body{background:#fff}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <span class="logo-text">Valence <span>Energy</span></span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-back">← Back to site</a>
+      <a href="#book" class="nav-audit">Book a full audit</a>
+    </div>
+  </div>
+</nav>
+
+<div class="calc-hero">
+  <div class="eyebrow">Free indicative tool</div>
+  <h1>Energy Savings Calculator</h1>
+  <p>Model the financial case for your energy upgrades in under five minutes. Enter your bills and toggle the measures that apply to your site.</p>
+</div>
+
+<div class="wrap">
+  <!-- SITE & BILLS -->
+  <div class="field" style="max-width:460px;margin-bottom:24px">
+    <label for="client">Business / site name</label>
+    <input type="text" id="client" placeholder="e.g. Riverside Café, Armagh">
+  </div>
+
+  <div class="grid">
+    <!-- LEFT COL -->
+    <div>
+
+      <div class="panel">
+        <div class="panel-title"><span class="dot"></span><span class="step-badge">1</span> Your annual energy bills</div>
+        <div class="row2">
+          <div class="field"><label for="elecBill">Electricity bill</label><div class="unit"><input type="number" id="elecBill" value="" placeholder="e.g. 9,100" step="50"><span class="u">£/yr</span></div></div>
+          <div class="field"><label for="gasBill">Gas / oil bill</label><div class="unit"><input type="number" id="gasBill" value="" placeholder="e.g. 3,500" step="50"><span class="u">£/yr</span></div></div>
+        </div>
+        <div id="billHelper" class="bill-helper"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><span class="dot"></span><span class="step-badge">2</span> Unit prices <span style="font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)">(check your bill — defaults are 2025 averages)</span></div>
+        <div class="row3">
+          <div class="field"><label for="pElec">Electricity</label><div class="unit"><input type="number" id="pElec" value="26" step="0.1"><span class="u">p/kWh</span></div></div>
+          <div class="field"><label for="pGas">Mains gas</label><div class="unit"><input type="number" id="pGas" value="7" step="0.1"><span class="u">p/kWh</span></div></div>
+          <div class="field"><label for="pOil">Heating oil</label><div class="unit"><input type="number" id="pOil" value="7.5" step="0.1"><span class="u">p/kWh</span></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><span class="dot"></span><span class="step-badge">3</span> Heating baseline</div>
+        <div class="row2">
+          <div class="field"><label for="heatKwh">Annual heating energy use</label><div class="unit"><input type="number" id="heatKwh" value="18000" step="100"><span class="u">kWh</span></div></div>
+          <div class="field"><label for="heatFuel">Heating fuel</label>
+            <select id="heatFuel">
+              <option value="gas">Mains gas</option>
+              <option value="oil">Heating oil</option>
+              <option value="elec">Electricity</option>
+            </select>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-top:8px">💡 Not sure? Divide your annual gas bill by your gas unit price, or use 18,000 kWh as a starting point for a medium commercial unit.</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><span class="dot"></span><span class="step-badge">4</span> Site context <span style="font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)">(for grant matching)</span></div>
+        <div class="row2">
+          <div class="field"><label for="region">Region</label>
+            <select id="region">
+              <option value="england">England</option>
+              <option value="wales">Wales</option>
+              <option value="scotland">Scotland</option>
+              <option value="ni">Northern Ireland</option>
+              <option value="roi">Republic of Ireland</option>
+            </select>
+          </div>
+          <div class="field"><label for="sector">Sector</label>
+            <select id="sector">
+              <option value="commercial">Commercial / office</option>
+              <option value="hospitality">Hospitality / retail</option>
+              <option value="manufacturing">Manufacturing / industrial</option>
+              <option value="public">Public sector</option>
+              <option value="other">Other / unsure</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-title"><span class="dot"></span><span class="step-badge">5</span> Toggle your upgrade options</div>
+
+        <!-- LED -->
+        <div class="measure on" data-id="led">
+          <div class="mhead">
+            <label class="switch"><input type="checkbox" class="toggle" checked><span class="slider"></span></label>
+            <span class="mname">LED lighting upgrade</span><span class="mfuel">Electricity</span>
+          </div>
+          <div class="mbody">
+            <div class="row3">
+              <div class="field"><label>Fittings</label><input type="number" id="led_n" value="20" step="1"></div>
+              <div class="field"><label>Old watts each</label><input type="number" id="led_old" value="50" step="1"></div>
+              <div class="field"><label>New LED watts</label><input type="number" id="led_new" value="9" step="1"></div>
+            </div>
+            <div class="row3">
+              <div class="field"><label>Hours / day</label><input type="number" id="led_hrs" value="10" step="0.5"></div>
+              <div class="field"><label>Days / year</label><input type="number" id="led_days" value="310" step="1"></div>
+              <div class="field"><label>Install cost</label><div class="unit"><input type="number" id="led_cost" value="600" step="10"><span class="u">£</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Heating efficiency -->
+        <div class="measure on" data-id="eff">
+          <div class="mhead">
+            <label class="switch"><input type="checkbox" class="toggle" checked><span class="slider"></span></label>
+            <span class="mname">Heating efficiency upgrade</span><span class="mfuel">Heating fuel</span>
+          </div>
+          <div class="mbody">
+            <div class="row3">
+              <div class="field"><label>Current efficiency</label><div class="unit"><input type="number" id="eff_old" value="78" step="1"><span class="u">%</span></div></div>
+              <div class="field"><label>New efficiency</label><div class="unit"><input type="number" id="eff_new" value="92" step="1"><span class="u">%</span></div></div>
+              <div class="field"><label>Install cost</label><div class="unit"><input type="number" id="eff_cost" value="3200" step="50"><span class="u">£</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="measure on" data-id="ctrl">
+          <div class="mhead">
+            <label class="switch"><input type="checkbox" class="toggle" checked><span class="slider"></span></label>
+            <span class="mname">Smart heating controls</span><span class="mfuel">Heating fuel</span>
+          </div>
+          <div class="mbody">
+            <div class="row2">
+              <div class="field"><label>Expected reduction</label><div class="unit"><input type="number" id="ctrl_pct" value="8" step="1"><span class="u">%</span></div></div>
+              <div class="field"><label>Install cost</label><div class="unit"><input type="number" id="ctrl_cost" value="250" step="10"><span class="u">£</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insulation -->
+        <div class="measure" data-id="ins">
+          <div class="mhead">
+            <label class="switch"><input type="checkbox" class="toggle"><span class="slider"></span></label>
+            <span class="mname">Insulation upgrade</span><span class="mfuel">Heating fuel</span>
+          </div>
+          <div class="mbody">
+            <div class="row2">
+              <div class="field"><label>Expected reduction</label><div class="unit"><input type="number" id="ins_pct" value="10" step="1"><span class="u">%</span></div></div>
+              <div class="field"><label>Install cost</label><div class="unit"><input type="number" id="ins_cost" value="1200" step="50"><span class="u">£</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Draught -->
+        <div class="measure" data-id="draught">
+          <div class="mhead">
+            <label class="switch"><input type="checkbox" class="toggle"><span class="slider"></span></label>
+            <span class="mname">Draught-proofing</span><span class="mfuel">Heating fuel</span>
+          </div>
+          <div class="mbody">
+            <div class="row2">
+              <div class="field"><label>Expected reduction</label><div class="unit"><input type="number" id="draught_pct" value="5" step="1"><span class="u">%</span></div></div>
+              <div class="field"><label>Install cost</label><div class="unit"><input type="number" id="draught_cost" value="350" step="10"><span class="u">£</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VSD -->
+        <div class="measure" data-id="vsd">
+          <div class="mhead">
+            <label class="switch"><input type="checkbox" class="toggle"><span class="slider"></span></label>
+            <span class="mname">VSD on HVAC / refrigeration fans &amp; pumps</span><span class="mfuel">Electricity</span>
+          </div>
+          <div class="mbody">
+            <div class="row3">
+              <div class="field"><label>Motor load (total kW)</label><input type="number" id="vsd_kw" value="15" step="0.5"></div>
+              <div class="field"><label>Hours / day</label><input type="number" id="vsd_hrs" value="16" step="0.5"></div>
+              <div class="field"><label>Days / year</label><input type="number" id="vsd_days" value="365" step="1"></div>
+            </div>
+            <div class="row3">
+              <div class="field"><label>Load factor (pre-VSD)</label><div class="unit"><input type="number" id="vsd_load" value="80" step="5"><span class="u">%</span></div></div>
+              <div class="field"><label>Speed reduction</label><div class="unit"><input type="number" id="vsd_spd" value="20" step="5"><span class="u">%</span></div></div>
+              <div class="field"><label>Install cost</label><div class="unit"><input type="number" id="vsd_cost" value="3500" step="100"><span class="u">£</span></div></div>
+            </div>
+            <div class="note">Fan/pump power scales with speed³ (affinity laws). A 20% speed reduction saves ~49% of shaft power. Your engineer can confirm the right settings for your equipment.</div>
+          </div>
+        </div>
+
+        <!-- Solar PV -->
+        <div class="measure" data-id="solar">
+          <div class="mhead">
+            <label class="switch"><input type="checkbox" class="toggle"><span class="slider"></span></label>
+            <span class="mname">Solar PV</span><span class="mfuel">Electricity</span>
+          </div>
+          <div class="mbody">
+            <div class="row3">
+              <div class="field"><label>System size</label><div class="unit"><input type="number" id="solar_kwp" value="10" step="0.5"><span class="u">kWp</span></div></div>
+              <div class="field"><label>Annual yield</label><div class="unit"><input type="number" id="solar_yield" value="900" step="10"><span class="u">kWh/kWp</span></div></div>
+              <div class="field"><label>Self-consumption</label><div class="unit"><input type="number" id="solar_self" value="50" step="5"><span class="u">%</span></div></div>
+            </div>
+            <div class="row2">
+              <div class="field"><label>Export tariff (SEG)</label><div class="unit"><input type="number" id="solar_export" value="15" step="0.5"><span class="u">p/kWh</span></div></div>
+              <div class="field"><label>Install cost</label><div class="unit"><input type="number" id="solar_cost" value="8000" step="100"><span class="u">£</span></div></div>
+            </div>
+            <div class="note">Yield of 850–950 kWh/kWp/yr is typical for south-facing UK/Ireland roofs. Self-consumption depends on your occupancy hours — higher daytime usage = better economics.</div>
+          </div>
+        </div>
+
+        <!-- Heat pump -->
+        <div class="measure" data-id="hp">
+          <div class="mhead">
+            <label class="switch"><input type="checkbox" class="toggle"><span class="slider"></span></label>
+            <span class="mname">Heat pump (ASHP)</span><span class="mfuel">Fuel → Elec</span>
+          </div>
+          <div class="mbody">
+            <div class="row3">
+              <div class="field"><label>Seasonal COP</label><input type="number" id="hp_cop" value="3.0" step="0.1"></div>
+              <div class="field"><label>Heating demand replaced</label><div class="unit"><input type="number" id="hp_pct" value="100" step="5"><span class="u">%</span></div></div>
+              <div class="field"><label>Install cost</label><div class="unit"><input type="number" id="hp_cost" value="12000" step="100"><span class="u">£</span></div></div>
+            </div>
+            <div class="note">Saving = existing fuel cost minus new electricity cost. At current prices (gas ~7p, electricity ~26p) a COP of 3.7+ is needed to break even. A full audit will assess your building's suitability and the right system size.</div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /left col -->
+
+    <!-- RIGHT COL — RESULTS -->
+    <div>
+      <div class="panel">
+        <div class="panel-title"><span class="dot"></span>Your estimated savings</div>
+
+        <div class="result-hero">
+          <div class="rstat green">
+            <div class="rl">Annual saving</div>
+            <div class="rv" id="sumSave">£0</div>
+            <div class="rs">per year</div>
+          </div>
+          <div class="rstat navy">
+            <div class="rl">Total investment</div>
+            <div class="rv" id="sumCost">£0</div>
+            <div class="rs">to install</div>
+          </div>
+          <div class="rstat amber">
+            <div class="rl">Blended payback</div>
+            <div class="rv" id="sumPb">–</div>
+            <div class="rs">years</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr><th>Measure</th><th>Saving/yr</th><th>Cost</th><th>Payback</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div id="emptyMsg" class="empty">Toggle on a measure above to see its estimated saving here.</div>
+
+        <div class="co2-badge" id="co2Badge" style="display:none">
+          <div>
+            <div class="cv" id="co2Val">0 kg</div>
+            <div class="cl">estimated CO₂e avoided per year across selected measures</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRANTS -->
+      <div class="panel grants-section" id="grantsPanel" style="display:none">
+        <div class="panel-title"><span class="dot" style="background:var(--teal)"></span>Grants you may be eligible for</div>
+        <div class="grants-caveat">Schemes open and close — always verify current eligibility before proceeding. Links go to official sources.</div>
+        <div id="grantsGrid"></div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-band" id="book">
+        <h3>Get your confirmed numbers</h3>
+        <p>This tool gives you a useful indication — a Valence Energy site audit gives you figures verified against your actual data, a detailed written report, and a supported grant application.</p>
+        <div class="cta-form-row">
+          <input class="cta-input" type="text" id="cta_name" placeholder="Your name">
+          <input class="cta-input" type="email" id="cta_email" placeholder="Work email">
+        </div>
+        <input class="cta-input" type="text" id="cta_business" placeholder="Business name &amp; location" style="margin-bottom:12px">
+        <button class="cta-submit" type="button" onclick="submitEnquiry()">Book a free scoping call →</button>
+        <p class="cta-note">We respond within one business day. No spam.</p>
+        <div id="ctaConfirm" style="display:none;margin-top:14px;background:rgba(0,200,150,.15);border:1px solid rgba(0,200,150,.3);border-radius:8px;padding:12px;color:#fff;font-size:14px">
+          ✓ Thanks — we'll be in touch shortly at <span id="ctaEmail"></span>
+        </div>
+      </div>
+
+      <p style="font-size:12px;color:var(--muted);margin-top:16px;text-align:center">
+        These are indicative estimates only, not a statutory EPC. Figures should be validated against metered data before quoting.
+        <button onclick="window.print()" style="background:none;border:none;color:var(--teal);cursor:pointer;font-size:12px;text-decoration:underline;padding:0;font-family:var(--body)">Print / save PDF</button>
+      </p>
+    </div><!-- /right col -->
+  </div><!-- /grid -->
+</div><!-- /wrap -->
+
+<script>
+(function(){
+  var EF = {elec:0.207, gas:0.183, oil:0.247};
+  var NAMES = {
+    led:"LED lighting", eff:"Heating efficiency", ctrl:"Smart controls",
+    ins:"Insulation", draught:"Draught-proofing", vsd:"VSD (HVAC/refrigeration)",
+    solar:"Solar PV", hp:"Heat pump (ASHP)"
+  };
+
+  function num(id){ var el=document.getElementById(id); var v=parseFloat(el&&el.value); return isFinite(v)?v:0; }
+  function price(fuel){ return {elec:num('pElec'), gas:num('pGas'), oil:num('pOil')}[fuel]; }
+  function gbp(n){ return (n<0?'−':'')+'£'+Math.round(Math.abs(n)).toLocaleString('en-GB'); }
+  function yrs(n){ return n>0?(n<10?n.toFixed(1):Math.round(n))+' yr':'–'; }
+  function pbColor(pb){ if(pb<=0)return'var(--muted)';if(pb<=3)return'var(--teal)';if(pb<=7)return'var(--amber)';return'var(--red)'; }
+
+  function calcMeasure(id, heatFuel){
+    var h=num('heatKwh'), cost=num(id+'_cost');
+    if(id==='led'){
+      var kwh=Math.max(0,(num('led_old')-num('led_new')))*num('led_n')*num('led_hrs')*num('led_days')/1000;
+      return{kwh:kwh,save:kwh*price('elec')/100,co2:kwh*EF.elec,cost:cost};
+    }
+    if(id==='eff'){
+      var o=num('eff_old'),n=num('eff_new');
+      var kwh=n>0?Math.max(0,h*(1-o/n)):0;
+      return{kwh:kwh,save:kwh*price(heatFuel)/100,co2:kwh*(EF[heatFuel]||0),cost:cost};
+    }
+    if(id==='ctrl'){var kwh=h*num('ctrl_pct')/100;return{kwh:kwh,save:kwh*price(heatFuel)/100,co2:kwh*(EF[heatFuel]||0),cost:cost};}
+    if(id==='ins'){var kwh=h*num('ins_pct')/100;return{kwh:kwh,save:kwh*price(heatFuel)/100,co2:kwh*(EF[heatFuel]||0),cost:cost};}
+    if(id==='draught'){var kwh=h*num('draught_pct')/100;return{kwh:kwh,save:kwh*price(heatFuel)/100,co2:kwh*(EF[heatFuel]||0),cost:cost};}
+    if(id==='vsd'){
+      var speedRed=Math.min(99,num('vsd_spd'))/100;
+      var fullKwh=num('vsd_kw')*Math.min(1,num('vsd_load')/100)*num('vsd_hrs')*num('vsd_days');
+      var kwh=fullKwh*(1-Math.pow(1-speedRed,3));
+      return{kwh:kwh,save:kwh*price('elec')/100,co2:kwh*EF.elec,cost:cost};
+    }
+    if(id==='solar'){
+      var gen=num('solar_kwp')*num('solar_yield');
+      var selfFrac=Math.min(1,num('solar_self')/100);
+      var selfKwh=gen*selfFrac, exportKwh=gen*(1-selfFrac);
+      var save=selfKwh*price('elec')/100+exportKwh*num('solar_export')/100;
+      return{kwh:selfKwh,save:save,co2:selfKwh*EF.elec,cost:cost};
+    }
+    if(id==='hp'){
+      var heatReplaced=h*Math.min(100,num('hp_pct'))/100;
+      var cop=Math.max(0.5,num('hp_cop'));
+      var elecIn=heatReplaced/cop;
+      var save=heatReplaced*price(heatFuel)/100-elecIn*price('elec')/100;
+      var co2=heatReplaced*(EF[heatFuel]||0)-elecIn*EF.elec;
+      return{kwh:heatReplaced,save:save,co2:co2,cost:cost};
+    }
+    return{kwh:0,save:0,co2:0,cost:0};
+  }
+
+  /* ── GRANTS ── */
+  var GRANTS=[
+    {name:'Boiler Upgrade Scheme (BUS)',value:'£7,500 ASHP grant',desc:'Capital grant toward an air source heat pump for eligible small non-domestic properties.',note:'England & Wales. Valid EPC required. Applied for via your MCS-certified installer.',url:'https://www.gov.uk/apply-boiler-upgrade-scheme',measures:['hp'],regions:['england','wales'],sectors:['all']},
+    {name:'Smart Export Guarantee (SEG)',value:'Export tariff (varies by supplier)',desc:'Mandatory tariff paid for surplus solar electricity exported to the grid.',note:'Great Britain. System must be MCS-certified (≤5 MW). Shop around — rates differ significantly between suppliers.',url:'https://www.ofgem.gov.uk/information-for-household-consumers/smart-export-guarantee-seg',measures:['solar'],regions:['england','wales','scotland'],sectors:['all']},
+    {name:'Salix Finance (0% loans)',value:'Interest-free loan — repaid from savings',desc:'Interest-free loans for public sector bodies covering LED, controls, insulation, heat pumps, and more.',note:'Public sector only (schools, NHS, councils). No grants element — repaid from verified savings.',url:'https://www.salixfinance.co.uk',measures:['led','ctrl','ins','eff','hp','vsd','solar','draught'],regions:['england','wales','scotland'],sectors:['public']},
+    {name:'Industrial Energy Transformation Fund (IETF)',value:'Up to £30m (project-dependent)',desc:'Competitive grants for energy-intensive industrial sites covering heat pumps, VSDs, and process heat.',note:'England only. Typically requires high energy spend (>£1m/yr). Competitive with technical assessments.',url:'https://www.gov.uk/government/collections/industrial-energy-transformation-fund',measures:['hp','vsd','eff','ins'],regions:['england'],sectors:['manufacturing']},
+    {name:'UK Shared Prosperity Fund (UKSPF)',value:'Varies by local authority',desc:'Business support grants administered locally — many councils direct UKSPF toward SME energy efficiency.',note:'Criteria vary by area. Contact your local Growth Hub or council economic development team.',url:'https://www.gov.uk/government/publications/uk-shared-prosperity-fund-prospectus',measures:['led','ins','ctrl','vsd','solar','eff'],regions:['england','wales','scotland','ni'],sectors:['commercial','hospitality','manufacturing','other']},
+    {name:'Climate Change Agreement (CCA)',value:'Up to 92% Climate Change Levy discount',desc:'Tax relief in exchange for meeting sector energy reduction targets — significant saving on energy bills.',note:'Negotiated through sector associations. Eligible for energy-intensive commercial and industrial sectors.',url:'https://www.gov.uk/guidance/climate-change-agreements-how-to-apply',measures:['led','vsd','eff','ins','hp','ctrl'],regions:['england','wales','scotland'],sectors:['hospitality','manufacturing','commercial']},
+    {name:'NI Sustainable Energy Programme (NISEP)',value:'Varies by measure and supplier',desc:'Utility-funded scheme subsidising energy efficiency measures for businesses in Northern Ireland.',note:'Delivered through electricity and gas suppliers in NI. Check with your supplier for current offers.',url:'https://www.uregni.gov.uk/nisep',measures:['ins','ctrl','eff','led','draught'],regions:['ni'],sectors:['all']},
+    {name:'NI Reconnect Scheme',value:'Varies — check current rates',desc:'Northern Ireland support for replacing fossil fuel heating with air source heat pumps.',note:'Check current scheme status with the Department for the Economy NI.',url:'https://www.economy-ni.gov.uk/reconnect',measures:['hp'],regions:['ni'],sectors:['all']},
+    {name:'SEAI Business Energy Upgrade (ROI)',value:'Up to 30% of project cost',desc:'Grant support for SMEs and large businesses upgrading heating, lighting, controls, insulation, and renewables.',note:'Republic of Ireland. Minimum project cost thresholds apply. Requires registered contractor.',url:'https://www.seai.ie/grants/business-grants/',measures:['hp','solar','led','ins','ctrl','vsd','eff'],regions:['roi'],sectors:['commercial','hospitality','manufacturing','other']},
+    {name:'SEAI EXEED Programme (ROI)',value:'Up to 30% — larger projects',desc:'Excellence in Energy Efficient Design — for larger commercial/industrial projects with significant energy spend.',note:'Republic of Ireland. Requires EXEED-certified engineer involvement.',url:'https://www.seai.ie/business-and-public-sector/large-industry-and-business/exeed-certified/',measures:['vsd','hp','ins','eff','solar','led'],regions:['roi'],sectors:['manufacturing','commercial']},
+    {name:'SEAI Better Energy Communities (ROI)',value:'Co-funding (community scale)',desc:'Co-funding for community-scale projects spanning multiple buildings — insulation, heating, and renewables.',note:'Republic of Ireland. Requires a community project lead. Annual competitive calls.',url:'https://www.seai.ie/grants/community-grants/better-energy-communities/',measures:['ins','hp','solar','eff','led','ctrl'],regions:['roi'],sectors:['all']},
+    {name:'SEAI Public Sector Programme (ROI)',value:'Dedicated grant stream',desc:'SEAI support for public bodies — audits, capital grants, and project development across all major measures.',note:'Republic of Ireland public sector. Mandatory energy reporting applies.',url:'https://www.seai.ie/business-and-public-sector/public-sector/',measures:['led','ins','ctrl','eff','hp','vsd','solar'],regions:['roi'],sectors:['public']}
+  ];
+
+  function matchGrants(active){
+    var region=(document.getElementById('region')||{}).value||'england';
+    var sector=(document.getElementById('sector')||{}).value||'commercial';
+    return GRANTS.filter(function(g){
+      return g.regions.indexOf(region)>-1 &&
+             (g.sectors.indexOf('all')>-1||g.sectors.indexOf(sector)>-1) &&
+             g.measures.some(function(m){return active.indexOf(m)>-1;});
+    });
+  }
+
+  function renderGrants(active){
+    var matched=matchGrants(active);
+    var panel=document.getElementById('grantsPanel');
+    var grid=document.getElementById('grantsGrid');
+    if(!matched.length){panel.style.display='none';return;}
+    panel.style.display='block';
+    grid.innerHTML=matched.map(function(g){
+      return '<div class="grant-card">'+
+        '<div class="gtitle">'+g.name+'</div>'+
+        '<span class="gval">'+g.value+'</span>'+
+        '<div class="gdesc">'+g.desc+'</div>'+
+        '<div class="gnote">'+g.note+'</div>'+
+        '<a href="'+g.url+'" target="_blank" rel="noopener">Verify on official source ↗</a>'+
+      '</div>';
+    }).join('');
+  }
+
+  /* ── BILL HELPER ── */
+  function updateBillHelper(){
+    var elecBill=num('elecBill'), gasBill=num('gasBill'), pElec=num('pElec'), pGas=num('pGas');
+    var el=document.getElementById('billHelper');
+    var msgs=[];
+    if(elecBill>0&&pElec>0){
+      var impliedKwh=elecBill/pElec*100;
+      msgs.push('Electricity: implies ~<strong>'+Math.round(impliedKwh).toLocaleString('en-GB')+' kWh/yr</strong> at '+pElec+'p (excl. standing charges).');
+    }
+    if(gasBill>0&&pGas>0){
+      var impliedGasKwh=gasBill/pGas*100;
+      msgs.push('Gas: implies ~<strong>'+Math.round(impliedGasKwh).toLocaleString('en-GB')+' kWh/yr</strong> — use this in the heating baseline above.');
+    }
+    if(msgs.length){
+      el.style.display='block'; el.className='bill-helper info';
+      el.innerHTML='ℹ️ '+msgs.join(' ');
+    } else {
+      el.style.display='none';
+    }
+  }
+
+  /* ── MAIN COMPUTE ── */
+  function compute(){
+    var heatFuel=document.getElementById('heatFuel').value;
+    var rows=document.getElementById('rows');
+    rows.innerHTML='';
+    var totSave=0,totCost=0,totCo2=0,any=false;
+    var active=[];
+
+    document.querySelectorAll('.measure').forEach(function(m){
+      var id=m.getAttribute('data-id');
+      var on=m.querySelector('.toggle').checked;
+      m.classList.toggle('on',on);
+      if(!on)return;
+      active.push(id);
+      var r=calcMeasure(id,heatFuel);
+      var save=r.save,co2=r.co2,cost=r.cost;
+      var pb=save>0?cost/save:0;
+      if(r.kwh<=0&&cost<=0)return;
+      any=true;
+      totSave+=save; totCost+=cost; totCo2+=co2;
+      var pct=pb>0?Math.max(6,Math.min(100,100-(pb/12*100))):0;
+      var tr=document.createElement('tr');
+      tr.innerHTML=
+        '<td class="mname-td">'+NAMES[id]+'</td>'+
+        '<td style="'+(save<0?'color:var(--red)':'font-weight:600;color:var(--teal)')+'">'+gbp(save)+'</td>'+
+        '<td>'+gbp(cost)+'</td>'+
+        '<td><div class="pbcell"><span>'+yrs(pb)+'</span><div class="bar"><span style="width:'+pct+'%;background:'+pbColor(pb)+'"></span></div></div></td>';
+      rows.appendChild(tr);
+    });
+
+    document.getElementById('emptyMsg').style.display=any?'none':'block';
+    if(any){
+      var blended=totSave>0?totCost/totSave:0;
+      var tr=document.createElement('tr');tr.className='tot';
+      tr.innerHTML='<td>Total</td><td style="color:var(--teal)">'+gbp(totSave)+'</td><td>'+gbp(totCost)+'</td><td>'+yrs(blended)+'</td>';
+      rows.appendChild(tr);
+    }
+    document.getElementById('sumSave').textContent=gbp(totSave);
+    document.getElementById('sumCost').textContent=gbp(totCost);
+    document.getElementById('sumPb').textContent=totSave>0?yrs(totCost/totSave):'–';
+
+    var co2Badge=document.getElementById('co2Badge');
+    if(totCo2>0){
+      co2Badge.style.display='flex';
+      var tonne=totCo2>=1000;
+      document.getElementById('co2Val').textContent=tonne?(totCo2/1000).toFixed(1)+' t':Math.round(totCo2)+' kg';
+    } else {
+      co2Badge.style.display='none';
+    }
+
+    renderGrants(active);
+    updateBillHelper();
+  }
+
+  /* ── ENQUIRY SUBMIT ── */
+  window.submitEnquiry=function(){
+    var name=document.getElementById('cta_name').value.trim();
+    var email=document.getElementById('cta_email').value.trim();
+    if(!name||!email){alert('Please enter your name and email.');return;}
+    document.getElementById('ctaEmail').textContent=email;
+    document.getElementById('ctaConfirm').style.display='block';
+    document.querySelector('.cta-submit').disabled=true;
+    document.querySelector('.cta-submit').textContent='Enquiry sent ✓';
+  };
+
+  document.addEventListener('input',compute);
+  document.addEventListener('change',compute);
+  compute();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valance Energy - Commercial Energy Audits & Retrofit Advisory</title>
+<meta name="description" content="Valance Energy delivers precision energy audits, savings modelling, and grant identification for commercial and SME clients across Ireland and the UK.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0C2340;
+  --teal:#0A7C6A;
+  --green:#00C896;
+  --amber:#E8A838;
+  --red:#C0392B;
+  --ink:#1A2332;
+  --muted:#5B6E84;
+  --line:#DCE4ED;
+  --surface:#F4F7FB;
+  --card:#FFFFFF;
+  --display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(12,35,64,.97);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.nav-inner{
+  max-width:1120px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:64px;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{
+  width:34px;height:34px;border-radius:8px;
+  background:linear-gradient(135deg,var(--green),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  flex:none;
+}
+.logo-mark svg{width:18px;height:18px}
+.logo-text{font-family:var(--display);font-weight:700;font-size:17px;color:#fff;letter-spacing:-.01em}
+.logo-text span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:6px}
+.nav-links a{font-family:var(--display);font-weight:500;font-size:14px;color:rgba(255,255,255,.75);text-decoration:none;padding:7px 12px;border-radius:8px;transition:color .15s,background .15s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.07)}
+.nav-cta{
+  font-family:var(--display);font-weight:600;font-size:14px;
+  background:var(--green);color:var(--navy);
+  border:none;padding:9px 18px;border-radius:8px;cursor:pointer;
+  text-decoration:none;transition:background .15s,transform .1s;
+}
+.nav-cta:hover{background:#00dea8;transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:22px;height:2px;background:rgba(255,255,255,.8);border-radius:2px;transition:.2s}
+@media(max-width:760px){
+  .nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:rgba(12,35,64,.98);flex-direction:column;padding:12px 24px 20px;gap:2px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 12px;border-radius:6px}
+  .hamburger{display:flex}
+}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(160deg,#0C2340 0%,#0A3D6B 60%,#0A5C4F 100%);
+  padding:96px 24px 80px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300C896' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-inner{max-width:1120px;margin:0 auto;position:relative;display:grid;grid-template-columns:1fr 420px;gap:60px;align-items:center}
+@media(max-width:960px){.hero-inner{grid-template-columns:1fr}}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,200,150,.12);border:1px solid rgba(0,200,150,.25);color:var(--green);border-radius:20px;padding:5px 14px;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:20px}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,5vw,54px);line-height:1.1;color:#fff;letter-spacing:-.02em;margin-bottom:20px}
+h1 em{font-style:normal;color:var(--green)}
+.hero-sub{font-size:clamp(16px,2vw,19px);color:rgba(255,255,255,.75);max-width:560px;margin-bottom:36px;line-height:1.6}
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn-primary{
+  font-family:var(--display);font-weight:600;font-size:15px;
+  background:var(--green);color:var(--navy);
+  border:none;padding:14px 28px;border-radius:10px;cursor:pointer;
+  text-decoration:none;transition:background .15s,transform .1s;display:inline-block;
+}
+.btn-primary:hover{background:#00dea8;transform:translateY(-1px)}
+.btn-ghost{
+  font-family:var(--display);font-weight:600;font-size:15px;
+  background:rgba(255,255,255,.08);color:#fff;
+  border:1px solid rgba(255,255,255,.2);padding:14px 28px;border-radius:10px;
+  text-decoration:none;transition:background .15s;display:inline-block;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.14)}
+/* hero stats card */
+.hero-card{
+  background:rgba(255,255,255,.06);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;
+}
+@media(max-width:960px){.hero-card{display:none}}
+.hero-card-title{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:20px}
+.hero-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.hero-stat{background:rgba(255,255,255,.06);border-radius:12px;padding:16px}
+.hero-stat .sv{font-family:var(--display);font-weight:700;font-size:28px;color:#fff}
+.hero-stat .sv em{font-style:normal;color:var(--green)}
+.hero-stat .sl{font-size:12px;color:rgba(255,255,255,.55);margin-top:3px}
+.hero-bar{background:rgba(255,255,255,.08);border-radius:8px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:rgba(255,255,255,.7)}
+.hero-bar strong{color:var(--green);font-family:var(--display)}
+
+/* ── TRUST STRIP ── */
+.trust{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 24px}
+.trust-inner{max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:32px}
+.trust-item{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:13px;color:var(--muted)}
+.trust-item svg{opacity:.5;flex:none}
+
+/* ── SECTION SHARED ── */
+section{padding:88px 24px}
+.section-inner{max-width:1120px;margin:0 auto}
+.section-label{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,40px);line-height:1.15;letter-spacing:-.02em;color:var(--navy);margin-bottom:16px}
+.section-sub{font-size:17px;color:var(--muted);max-width:580px;line-height:1.65;margin-bottom:56px}
+
+/* ── SERVICES ── */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.service-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:28px;transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.service-card:hover{border-color:var(--teal);transform:translateY(-3px);box-shadow:0 12px 40px rgba(10,92,79,.1)}
+.service-icon{
+  width:52px;height:52px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(10,124,106,.12),rgba(0,200,150,.08));
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+}
+.service-card h3{font-family:var(--display);font-weight:600;font-size:18px;color:var(--navy);margin-bottom:8px}
+.service-card p{font-size:14px;color:var(--muted);line-height:1.6}
+.service-card .tag{display:inline-block;margin-top:14px;font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--teal);background:rgba(10,124,106,.08);padding:3px 9px;border-radius:20px}
+
+/* ── HOW IT WORKS ── */
+.hiw{background:var(--navy);color:#fff}
+.hiw h2,.hiw .section-label{color:#fff}
+.hiw .section-label{color:var(--green);opacity:.9}
+.hiw .section-sub{color:rgba(255,255,255,.65)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;position:relative}
+.steps::before{
+  content:"";position:absolute;top:36px;left:10%;right:10%;height:2px;
+  background:linear-gradient(90deg,var(--green),rgba(0,200,150,.1));
+  border-radius:2px;pointer-events:none;
+}
+@media(max-width:760px){.steps::before{display:none};.steps{gap:20px}}
+.step{text-align:center;padding:0 20px 0;position:relative}
+.step-num{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),var(--teal));
+  font-family:var(--display);font-weight:700;font-size:22px;color:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 22px;position:relative;z-index:1;
+}
+.step h3{font-family:var(--display);font-weight:600;font-size:18px;color:#fff;margin-bottom:8px}
+.step p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.6}
+
+/* ── CALCULATOR CTA BAND ── */
+.calc-band{
+  background:linear-gradient(135deg,#0A3D6B,#0A5C4F);
+  padding:72px 24px;text-align:center;
+}
+.calc-band-inner{max-width:700px;margin:0 auto}
+.calc-band h2{color:#fff;margin-bottom:14px}
+.calc-band p{color:rgba(255,255,255,.72);font-size:17px;margin-bottom:32px;line-height:1.65}
+.calc-preview{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+  border-radius:16px;padding:24px 28px;margin-bottom:32px;text-align:left;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;
+}
+@media(max-width:600px){.calc-preview{grid-template-columns:1fr}}
+.cp-stat .cp-v{font-family:var(--display);font-weight:700;font-size:26px;color:var(--green)}
+.cp-stat .cp-l{font-size:12px;color:rgba(255,255,255,.55);margin-top:3px}
+
+/* ── WHY VALANCE ── */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+@media(max-width:860px){.why-grid{grid-template-columns:1fr}}
+.why-list{list-style:none;display:flex;flex-direction:column;gap:20px}
+.why-list li{display:flex;gap:16px;align-items:flex-start}
+.why-icon{
+  width:40px;height:40px;border-radius:10px;flex:none;
+  background:linear-gradient(135deg,rgba(10,124,106,.12),rgba(0,200,150,.08));
+  display:flex;align-items:center;justify-content:center;margin-top:2px;
+}
+.why-text h4{font-family:var(--display);font-weight:600;font-size:16px;color:var(--navy);margin-bottom:4px}
+.why-text p{font-size:14px;color:var(--muted);line-height:1.55}
+.why-card{
+  background:linear-gradient(160deg,var(--navy),#0A3D6B);
+  border-radius:20px;padding:36px;color:#fff;
+}
+.why-card-stat{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.wcs{background:rgba(255,255,255,.07);border-radius:12px;padding:18px}
+.wcs .v{font-family:var(--display);font-weight:700;font-size:30px;color:var(--green)}
+.wcs .l{font-size:12px;color:rgba(255,255,255,.55);margin-top:4px}
+.why-quote{font-size:14px;color:rgba(255,255,255,.65);line-height:1.6;border-top:1px solid rgba(255,255,255,.1);padding-top:18px;font-style:italic}
+
+/* ── GRANTS TEASER ── */
+.grants-teaser{background:var(--surface)}
+.grants-logos{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.grant-pill{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:10px 16px;font-family:var(--display);font-weight:600;font-size:13px;color:var(--navy);
+  display:flex;align-items:center;gap:8px;
+}
+.grant-pill .gpval{font-size:12px;font-weight:700;color:var(--teal);background:rgba(10,124,106,.1);padding:2px 8px;border-radius:8px}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+@media(max-width:860px){.contact-grid{grid-template-columns:1fr}}
+.contact-info h3{font-family:var(--display);font-weight:600;font-size:20px;color:var(--navy);margin-bottom:10px}
+.contact-info p{color:var(--muted);font-size:15px;line-height:1.65;margin-bottom:28px}
+.contact-detail{display:flex;flex-direction:column;gap:14px}
+.cd-item{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink)}
+.cd-item a{color:var(--teal);text-decoration:none}
+.cd-item a:hover{text-decoration:underline}
+.cd-icon{width:36px;height:36px;border-radius:8px;background:rgba(10,124,106,.08);display:flex;align-items:center;justify-content:center;flex:none}
+/* Form */
+.contact-form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:480px){.form-row{grid-template-columns:1fr}}
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+label{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:5px}
+input,select,textarea{
+  width:100%;font-family:var(--body);font-size:14px;color:var(--ink);
+  border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;
+  transition:border-color .15s,box-shadow .15s;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(10,124,106,.1)}
+textarea{resize:vertical;min-height:100px;line-height:1.5}
+.form-submit{
+  width:100%;font-family:var(--display);font-weight:600;font-size:15px;
+  background:var(--navy);color:#fff;border:none;
+  padding:13px;border-radius:10px;cursor:pointer;margin-top:4px;
+  transition:background .15s,transform .1s;
+}
+.form-submit:hover{background:#0a3060;transform:translateY(-1px)}
+.form-note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
+
+/* ── FOOTER ── */
+footer{background:var(--navy);color:rgba(255,255,255,.55);padding:48px 24px 32px}
+.footer-inner{max-width:1120px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+@media(max-width:760px){.footer-top{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.footer-top{grid-template-columns:1fr}}
+.footer-brand .logo-text{font-size:16px;color:#fff}
+.footer-brand p{font-size:13px;line-height:1.65;margin-top:12px;max-width:260px}
+.footer-col h5{font-family:var(--display);font-weight:600;font-size:13px;color:rgba(255,255,255,.85);margin-bottom:14px;letter-spacing:.02em}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;margin-bottom:8px;transition:color .15s}
+.footer-col a:hover{color:var(--green)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;font-size:12px}
+.footer-bottom a{color:rgba(255,255,255,.4);text-decoration:none}
+.footer-bottom a:hover{color:rgba(255,255,255,.7)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </div>
+      <span class="logo-text">Valance <span>Energy</span></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#services">Services</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#grants">Grants</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="calculator.html" class="nav-cta">Try the calculator</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span class="dot"></span>Energy Audit & Advisory</div>
+      <h1>Precision audits.<br><em>Proven paybacks.</em></h1>
+      <p class="hero-sub">We quantify exactly where your business is losing money on energy - then show you the fastest, highest-return path to cutting those costs and your carbon footprint.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">Book a free scoping call</a>
+        <a href="calculator.html" class="btn-ghost">Try the savings calculator →</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-title">Typical audit outcomes</div>
+      <div class="hero-stat-grid">
+        <div class="hero-stat">
+          <div class="sv"><em>18–35%</em></div>
+          <div class="sl">energy cost reduction</div>
+        </div>
+        <div class="hero-stat">
+          <div class="sv"><em>2–5 yr</em></div>
+          <div class="sl">blended payback</div>
+        </div>
+        <div class="hero-stat">
+          <div class="sv"><em>£3–12k</em></div>
+          <div class="sl">typical annual saving</div>
+        </div>
+        <div class="hero-stat">
+          <div class="sv"><em>£0</em></div>
+          <div class="sl">upfront audit cost*</div>
+        </div>
+      </div>
+      <div class="hero-bar">First scoping call is free - no obligation <strong>↓</strong></div>
+      <p style="font-size:11px;color:rgba(255,255,255,.3);margin-top:10px">*Scoping call free. Full audit fees vary by site - quoted upfront.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      SEAI Registered Assessors
+    </div>
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      ISO 50001 Aligned Methodology
+    </div>
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Detailed Written Reports
+    </div>
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Serving Ireland & the UK
+    </div>
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+      Grant Identification Included
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-label">What we do</div>
+    <h2>Everything from first numbers<br>to final invoice</h2>
+    <p class="section-sub">We handle the full journey - identifying what's costing you, modelling the returns, finding available funding, and supporting delivery.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3>On-site Energy Audit</h3>
+        <p>A thorough walk-through of your building and equipment - lighting, heating, refrigeration, HVAC, controls - with metered readings where needed. We identify every significant source of waste.</p>
+        <span class="tag">Typically half–one day on site</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3>Savings & Payback Modelling</h3>
+        <p>A bespoke financial model for your site - validated against your actual bills, with scenario comparisons across multiple measures, carbon impact, and blended payback periods.</p>
+        <span class="tag">Full written report delivered</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><path d="M8 7V5a2 2 0 0 0-4 0v2"/></svg>
+        </div>
+        <h3>Grant Identification</h3>
+        <p>We match your site, sector, and planned measures against current UK and Irish funding schemes - BUS, SEAI, NISEP, IETF, UKSPF, Salix, and more - and advise on the strongest applications.</p>
+        <span class="tag">Included in every report</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h3>Project Oversight</h3>
+        <p>Once you've approved a measure, we can manage the procurement and oversee installation - ensuring the works match the specification and the savings materialise as modelled.</p>
+        <span class="tag">Optional add-on</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="hiw" id="how-it-works">
+  <div class="section-inner">
+    <div class="section-label">The process</div>
+    <h2>From scoping call to<br>signed-off savings</h2>
+    <p class="section-sub">A straightforward four-step process - designed to give you clear answers quickly without months of delay.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Scoping Call</h3>
+        <p>Free 30-minute call. We understand your site, energy spend, and priorities - and confirm whether a full audit makes sense.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>On-site Audit</h3>
+        <p>We visit your premises, inspect all energy-consuming systems, and collect the data we need. Half a day for most commercial sites.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Report & Model</h3>
+        <p>You receive a full written report: savings by measure, payback periods, CO₂ impact, and all applicable grants - within two weeks.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Implement & Verify</h3>
+        <p>You choose which measures to proceed with. We can oversee delivery and verify savings against the model once works are complete.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR CTA BAND -->
+<div class="calc-band">
+  <div class="calc-band-inner">
+    <div class="section-label" style="color:var(--green);margin-bottom:10px">Try it now - free</div>
+    <h2>Get a sense of your savings<br>before we even visit</h2>
+    <p>Our indicative calculator lets you model LED, heat pump, solar PV, insulation, VSD, and more against your actual energy costs. Takes five minutes.</p>
+    <div class="calc-preview">
+      <div class="cp-stat"><div class="cp-v">£2,400</div><div class="cp-l">LED upgrade saving / yr</div></div>
+      <div class="cp-stat"><div class="cp-v">3.2 yr</div><div class="cp-l">blended payback</div></div>
+      <div class="cp-stat"><div class="cp-v">4.1 t</div><div class="cp-l">CO₂e avoided / yr</div></div>
+    </div>
+    <a href="calculator.html" class="btn-primary" style="font-size:16px;padding:16px 36px">Open the savings calculator →</a>
+    <p style="color:rgba(255,255,255,.45);font-size:13px;margin-top:16px">No login required. Figures are indicative - a full audit gives you confirmed numbers.</p>
+  </div>
+</div>
+
+<!-- GRANTS -->
+<section class="grants-teaser" id="grants">
+  <div class="section-inner">
+    <div class="section-label">Funding</div>
+    <h2>Grants available right now</h2>
+    <p class="section-sub">Most businesses leave grant funding unclaimed simply because they don't know it exists. We identify and advise on every applicable scheme as part of our standard report.</p>
+    <div class="grants-logos">
+      <div class="grant-pill">Boiler Upgrade Scheme <span class="gpval">£7,500</span></div>
+      <div class="grant-pill">SEAI Business Energy Upgrade <span class="gpval">Up to 30%</span></div>
+      <div class="grant-pill">SEAI EXEED <span class="gpval">Up to 30%</span></div>
+      <div class="grant-pill">NI NISEP <span class="gpval">Varies</span></div>
+      <div class="grant-pill">NI Reconnect <span class="gpval">Varies</span></div>
+      <div class="grant-pill">UKSPF <span class="gpval">Regional</span></div>
+      <div class="grant-pill">Salix Finance <span class="gpval">0% loan</span></div>
+      <div class="grant-pill">Industrial Energy Transformation Fund <span class="gpval">Up to £30m</span></div>
+      <div class="grant-pill">Climate Change Agreement <span class="gpval">92% CCL discount</span></div>
+      <div class="grant-pill">Smart Export Guarantee <span class="gpval">Solar export tariff</span></div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-top:20px">Scheme availability and award levels change regularly. All grant identification is verified against current official sources at the time of your report.</p>
+  </div>
+</section>
+
+<!-- WHY Valance -->
+<section id="about">
+  <div class="section-inner">
+    <div class="why-grid">
+      <div>
+        <div class="section-label">Why Valance</div>
+        <h2>Straightforward advice.<br>No overselling.</h2>
+        <p style="color:var(--muted);font-size:16px;line-height:1.65;margin-bottom:36px">We're an independent advisory - we don't install equipment and we don't earn commission from suppliers. That means the numbers we give you reflect only what's genuinely best for your site.</p>
+        <ul class="why-list">
+          <li>
+            <div class="why-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="why-text">
+              <h4>Independent - no supplier tie-ins</h4>
+              <p>Our recommendations are based on your actual data, not on what a manufacturer pays us to recommend.</p>
+            </div>
+          </li>
+          <li>
+            <div class="why-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="why-text">
+              <h4>Commercial focus, commercial language</h4>
+              <p>Every measure is presented as a financial decision - saving per year, cost, payback, ROI - so you can compare it to any other investment.</p>
+            </div>
+          </li>
+          <li>
+            <div class="why-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="why-text">
+              <h4>Ireland and UK coverage</h4>
+              <p>We work across the Republic of Ireland, Northern Ireland, and Great Britain - fluent in the different grant landscapes on each side of the border.</p>
+            </div>
+          </li>
+          <li>
+            <div class="why-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="why-text">
+              <h4>Fast - report within two weeks</h4>
+              <p>No lengthy procurement processes. You get clear numbers quickly so you can make decisions this financial year, not next.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="why-card">
+        <div class="why-card-stat">
+          <div class="wcs"><div class="v">£0</div><div class="l">scoping call cost</div></div>
+          <div class="wcs"><div class="v">~5 yr</div><div class="l">typical max payback</div></div>
+          <div class="wcs"><div class="v">2 wk</div><div class="l">report turnaround</div></div>
+          <div class="wcs"><div class="v">100%</div><div class="l">independent advice</div></div>
+        </div>
+        <div class="why-quote">"The model was built on our actual bills and metered readings - not generic benchmarks. We will see exactly which measures to prioritise and why."<br><br><strong style="color:rgba(255,255,255,.7);font-style:normal;font-size:13px">- Client, hospitality sector</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--surface)">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-label">Get in touch</div>
+        <h2>Book your free<br>scoping call</h2>
+        <p>Tell us about your site and we'll confirm whether a full audit makes sense - no obligation. Most scoping calls take 30 minutes.</p>
+        <div class="contact-detail">
+          <div class="cd-item">
+            <div class="cd-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <a href="mailto:hello@valanceenergy.co.uk">hello@Valanceenergy.co.uk</a>
+          </div>
+        <!-- <div class="cd-item">
+            <div class="cd-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <a href="tel:+443301010101">+44 (0)330 101 0101</a>
+          </div> -->
+          <div class="cd-item">
+            <div class="cd-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+            <a href="https://valanceenergy.co.uk" target="_blank">Valanceenergy.co.uk</a>
+          </div>
+          <div class="cd-item">
+            <div class="cd-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            Serving Ireland & the UK
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="field"><label>First name</label><input type="text" placeholder="Jane"></div>
+          <div class="field"><label>Last name</label><input type="text" placeholder="Smith"></div>
+        </div>
+        <div class="field"><label>Business name</label><input type="text" placeholder="e.g. Energy Ltd"></div>
+        <div class="field"><label>Email</label><input type="email" placeholder="name@yourbusiness.com"></div>
+        <div class="field"><label>Phone (optional)</label><input type="tel" placeholder="+44 or +353..."></div>
+        <div class="form-row">
+          <div class="field"><label>Site type</label>
+            <select>
+              <option>Commercial / office</option>
+              <option>Hospitality / retail</option>
+              <option>Manufacturing</option>
+              <option>Public sector</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label>Annual energy spend (approx)</label>
+            <select>
+              <option>Under £5,000</option>
+              <option>£5,000 – £15,000</option>
+              <option>£15,000 – £50,000</option>
+              <option>Over £50,000</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Anything specific you'd like to address?</label><textarea placeholder="e.g. looking at heat pump, high electricity bill, want to understand solar PV options…"></textarea></div>
+        <button class="form-submit" type="button">Request free scoping call</button>
+        <p class="form-note">We'll respond within one business day. No spam, ever.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo" style="margin-bottom:0">
+          <div class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <span class="logo-text">Valance <span>Energy</span></span>
+        </a>
+        <p>Independent energy audit and retrofit advisory. Serving commercial and SME clients across Ireland and the UK.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="#services">Energy Audits</a>
+        <a href="#services">Savings Modelling</a>
+        <a href="#grants">Grant Identification</a>
+        <a href="#services">Project Oversight</a>
+      </div>
+      <div class="footer-col">
+        <h5>Tools</h5>
+        <a href="calculator.html">Savings Calculator</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="mailto:hello@Valanceenergy.co.uk">hello@valanceenergy.co.uk</a>
+        <a href="#contact">Book a scoping call</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Valance Energy Ltd · <a href="#">valanceenergy.co.uk</a></span>
+      <span><a href="#">Privacy policy</a> · <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Mobile nav toggle
+document.getElementById('hamburger').addEventListener('click', function(){
+  document.getElementById('navLinks').classList.toggle('open');
+});
+// Close nav on link click (mobile)
+document.querySelectorAll('#navLinks a').forEach(function(a){
+  a.addEventListener('click', function(){ document.getElementById('navLinks').classList.remove('open'); });
+});
+</script>
+</body>
+</html>
